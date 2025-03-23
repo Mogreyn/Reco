@@ -1,0 +1,22 @@
+//Colors
+$error-color: #ea4335;
+$black-color: #111214;
+$yellow-color: #fbc000;
+$grey-color: #1b1d20;
+$grey-disabled-color: #c9c6bd;
+$white-color: #fffaea;
+$reco-letters: rgba(251, 192, 0, 0.1);
+$input-color: rgba(255, 255, 255, 0.1);
+$footer-gradient: radial-gradient(
+  371.89% 134.33% at 3.21% 1.26%,
+  rgba(251, 192, 0, 0.07) 0%,
+  rgba(251, 192, 0, 0) 100%
+);
+
+$main-border: 1px solid rgb(96, 80, 28);
+
+$transition-speed: 300ms;
+$transition-style: ease-in-out;
+
+$breakpoint-tablet: 1276px;
+$breakpoint-mobile: 768px;

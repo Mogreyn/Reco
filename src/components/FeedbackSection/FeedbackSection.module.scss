@@ -1,0 +1,161 @@
+@use "@/styles/variables" as *;
+
+.feedbackSection {
+  width: 100%;
+  padding: 60px 104px;
+  border-radius: 50px;
+  box-shadow: 0 8px 15px 0 rgba(0, 0, 0, 0.5);
+  background: #1b1d20;
+  color: $white-color;
+  border: $main-border;
+  position: relative;
+  margin-bottom: 120px;
+  box-sizing: border-box;
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: 60px 60px;
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    margin-bottom: 90px;
+
+    padding: 16px;
+    border-radius: 15px;
+    background: radial-gradient(
+      371.89% 134.33% at 3.21% 1.26%,
+      rgba(251, 192, 0, 0.07) 0%,
+      rgba(251, 192, 0, 0) 100%
+    );
+  }
+}
+
+.backgroundCircles {
+  top: -208px;
+  left: -280px;
+  transform: rotate(239deg);
+}
+
+.feedbackArrow {
+  width: 71px;
+  height: 53px;
+  background-image: image-set(
+    url(../../assets/images/sections/feedback/arrow-desc-1x.webp)
+      type("image/webp") 1x,
+    url(../../assets/images/sections/feedback/arrow-desc-2x.webp)
+      type("image/webp") 2x,
+    url(../../assets/images/sections/feedback/arrow-desc-1x.png)
+      type("image/png") 1x,
+    url(../../assets/images/sections/feedback/arrow-desc-2x.png)
+      type("image/png") 2x
+  );
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+
+  @media (max-width: $breakpoint-tablet) {
+    top: 92px;
+    left: 10px;
+    transform: rotate(305deg);
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    width: 40px;
+    height: 32px;
+    top: 36px;
+    left: 20px;
+    transform: rotate(342deg);
+  }
+}
+
+.feedbackTitle {
+  text-align: center;
+  font-weight: 400;
+  font-size: 30px;
+
+  @media (max-width: $breakpoint-tablet) {
+    font-size: 20px;
+    font-weight: 600;
+    text-wrap: balance;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    font-size: 16px;
+  }
+}
+
+.feedbackContent {
+  display: flex;
+}
+
+.feedbackImgContainer {
+  width: 600px;
+  height: 440px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 42px;
+
+  &:hover .feedbackImg {
+    transform: scale(1.1);
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    right: -80px;
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    display: none;
+  }
+}
+
+.feedbackImg {
+  pointer-events: none;
+  width: 100%;
+  position: absolute;
+  top: -132px;
+  left: 80px;
+
+  transition: transform $transition-speed $transition-style;
+}
+
+.formCirclesContainer {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 0;
+
+  @media (max-width: $breakpoint-mobile) {
+    display: none;
+  }
+}
+
+.formCircles {
+  background-image: image-set(
+    url(../../assets/images/sections/feedback/circles-desc-1x.webp)
+      type("image/webp") 1x,
+    url(../../assets/images/sections/feedback/circles-desc-2x.webp)
+      type("image/webp") 2x,
+    url(../../assets/images/sections/feedback/circles-desc-1x.png)
+      type("image/png") 1x,
+    url(../../assets/images/sections/feedback/circles-desc-2x.png)
+      type("image/png") 2x
+  );
+  background-repeat: no-repeat;
+  background-position: bottom;
+  width: 600px;
+  height: 464px;
+  position: absolute;
+  right: 16px;
+  bottom: 40px;
+
+  @media (max-width: $breakpoint-tablet) {
+    right: -100px;
+    bottom: 40px;
+  }
+}

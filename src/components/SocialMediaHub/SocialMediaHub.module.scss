@@ -1,0 +1,15 @@
+@use "@/styles/variables" as *;
+
+.social_media_hub {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  align-items: center;
+  text-align: left;
+  gap: 10px;
+  transition: all 0.3s ease;
+
+  @media (max-width: $breakpoint-mobile) {
+    order: -1;
+  }
+}

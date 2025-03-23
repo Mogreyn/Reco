@@ -1,0 +1,147 @@
+@use "@/styles/variables" as *;
+
+/* Стили для главной секции Hero */
+.heroSection {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  position: relative;
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: start;
+  flex-direction: row;
+  background-color: transparent;
+  color: $white-color;
+  text-align: center;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+/* Стили для основного контента */
+.mainContent {
+  display: flex;
+  flex-direction: row;
+  min-height: auto;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Стили для текстовых элементов */
+.textField {
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+  max-width: 82%;
+}
+
+.slogan {
+  text-transform: uppercase;
+  font-size: 64px;
+  text-align: left;
+}
+
+.text {
+  font-size: 32px;
+  text-align: left;
+  margin-bottom: 4rem;
+  max-width: 912px;
+  text-wrap: pretty;
+}
+
+/* Стили для изображения */
+.imageContainer {
+  position: absolute;
+  right: -60px;
+  top: 80px;
+  z-index: 10;
+
+  figcaption {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+}
+
+.image {
+  max-width: 470px;
+  height: auto;
+}
+
+/* Адаптивные стили для планшетов */
+@media (max-width: $breakpoint-tablet) {
+  .heroSection {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    padding: 0;
+  }
+
+  .mainContent {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .textField {
+    max-width: 100%;
+    gap: 0;
+  }
+
+  .slogan {
+    position: relative;
+    font-weight: 600;
+    font-size: 48px;
+    text-align: left;
+    text-wrap: pretty;
+  }
+
+  .text {
+    font-size: 28px;
+    text-align: left;
+    max-width: 500px;
+  }
+
+  .imageContainer {
+    position: relative;
+    top: 0;
+    right: 0;
+  }
+
+  .image {
+    margin: 0 auto;
+    max-width: 400px;
+    transform: scale(1.2);
+  }
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: $breakpoint-mobile) {
+  .slogan {
+    font-weight: 600;
+    font-size: 24px;
+    max-width: 88%;
+  }
+
+  .text {
+    font-size: 16px;
+    max-width: 290px;
+    margin: 0;
+  }
+
+  .imageContainer {
+    height: 320px;
+  }
+
+  .image {
+    max-width: 300px;
+    transform: none;
+  }
+}

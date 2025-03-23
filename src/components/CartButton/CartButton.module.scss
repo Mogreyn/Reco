@@ -1,0 +1,61 @@
+@use "@/styles/variables" as *;
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: $yellow-color;
+  border: 1px solid $yellow-color;
+  border-radius: 60px;
+  height: 58px;
+  width: 58px;
+  cursor: pointer;
+  position: relative;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: transparent;
+  border-color: $yellow-color;
+
+  .icon {
+    opacity: 0.7;
+  }
+}
+
+.icon {
+  display: block;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  border: 2px solid white;
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .button {
+    height: 35px;
+    width: 35px;
+  }
+
+  .badge {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+}

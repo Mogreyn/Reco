@@ -1,0 +1,99 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.feedbackForm {
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding-top: 22px;
+  flex-grow: 1;
+
+  button {
+    z-index: 1;
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    max-width: 360px;
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    gap: 0;
+  }
+}
+
+.feedbackButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.feedbackButtonText {
+  padding: 1rem;
+  color: $black-color;
+  margin-right: 25px;
+  font-size: 16px;
+  text-decoration: none;
+  @media (max-width: $breakpoint-mobile) {
+    padding: 1rem;
+    font-size: 12px;
+  }
+}
+
+.iconContainer {
+  height: 56px;
+  width: 56px;
+  background-color: $grey-color;
+  border-radius: 50%;
+  display: flex;
+  margin-right: 1px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 1px;
+  right: 0px;
+  @media (max-width: $breakpoint-mobile) {
+    height: 36px;
+    width: 36px;
+    top: 1px;
+    right: 0px;
+  }
+}
+
+.feedbackInputContainer {
+  @include inputFieldContainer;
+}
+
+.feedbackInput {
+  @include inputField;
+}
+
+.inputErrorText {
+  @include inputFieldError;
+}
+
+.phoneNumberInputContainer {
+  position: relative;
+}
+
+.inputIconPhone {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: start;
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .feedbackForm {
+    max-width: 360px;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+  }
+}

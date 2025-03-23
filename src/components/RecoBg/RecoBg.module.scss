@@ -1,0 +1,85 @@
+@use "@/styles/variables" as *;
+
+.background {
+  position: absolute;
+  top: -40px;
+  left: 0%;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+  z-index: 1;
+
+  @media (max-width: $breakpoint-tablet) {
+    top: 25%;
+  }
+}
+
+.wordLayer {
+  font-family: "Inter", sans-serif;
+  font-size: 420px;
+  font-weight: bold;
+  color: transparent;
+  -webkit-text-stroke: 1px $reco-letters;
+  text-transform: uppercase;
+  position: absolute;
+  text-align: left;
+  z-index: -1;
+  transform: translate(0, 0);
+  box-sizing: border-box;
+  user-select: none;
+
+  @media (max-width: $breakpoint-tablet) {
+    font-size: 280px;
+  }
+
+  @media screen and (max-width: $breakpoint-mobile) {
+    font-size: 140px;
+    opacity: 0.6;
+  }
+}
+
+@for $i from 1 through 7 {
+  .wordLayer:nth-child(#{$i}) {
+    transform: translate(#{$i * 1vw}, #{$i * 1vw});
+  }
+}
+
+.content {
+  z-index: 1;
+  position: relative;
+}
+
+.wordLayer:nth-child(1) {
+  transform: translate(0, 0);
+}
+
+.wordLayer:nth-child(2) {
+  transform: translate(5px, 5px);
+}
+
+.wordLayer:nth-child(3) {
+  transform: translate(10px, 10px);
+}
+
+.wordLayer:nth-child(4) {
+  transform: translate(15px, 15px);
+}
+
+.wordLayer:nth-child(5) {
+  transform: translate(20px, 20px);
+}
+
+.wordLayer:nth-child(6) {
+  transform: translate(25px, 25px);
+}
+
+.wordLayer:nth-child(7) {
+  transform: translate(30px, 30px);
+}
+
+.content {
+  z-index: 1;
+  position: relative;
+}

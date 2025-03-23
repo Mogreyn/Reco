@@ -1,0 +1,51 @@
+@use "@/styles/variables" as *;
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: $footer-gradient;
+  border: $main-border;
+  border-bottom: none;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  padding: 28px;
+  margin: 0;
+  max-width: 1360px;
+  width: 100%;
+  box-sizing: border-box;
+  @media (max-width: $breakpoint-mobile) {
+    padding: 20px;
+  }
+}
+
+.footer_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  max-width: 1360px;
+  background-color: transparent;
+  @media (max-width: $breakpoint-mobile) {
+    flex-wrap: wrap;
+  }
+}
+
+.linkLogo {
+  @media (max-width: $breakpoint-mobile) {
+    order: -1;
+    flex-grow: 1;
+  }
+}
+
+.authorRights {
+  font-weight: 100;
+  color: white;
+  font-size: 0.8rem;
+  @media (max-width: $breakpoint-mobile) {
+    font-size: 8px;
+  }
+}
