@@ -13,7 +13,7 @@ const NavButtons: FC<NavButtonsProps> = ({ buttons, className }) => {
     <div className={combinedClass} suppressHydrationWarning>
       {buttons.map(({ title, link }) => (
         <Link key={title} href={link}>
-          <Button size="m" variant="black">
+          <Button size="m" variant="transparent">
             {title}
           </Button>
         </Link>

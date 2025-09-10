@@ -40,7 +40,7 @@
   &--m {
     width: 201px;
     height: 58px;
-    font-size: 16px;
+    font-size: 22px;
     .button__icon {
       width: 52px;
       height: 52px;
@@ -156,5 +156,9 @@
     &:active {
       background-color: #1b1d20;
     }
+  }
+  &--transparent {
+    background: transparent;
+    color: $black-color;
   }
 }

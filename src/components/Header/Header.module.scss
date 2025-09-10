@@ -10,11 +10,12 @@
   left: 0;
   right: 0;
   z-index: 2000;
-  background-color: $black-color;
+  background-color: $white-color;
   transition: transform 0.3s ease-in-out;
   height: 100px;
   width: 100%;
   box-sizing: border-box;
+  border-bottom: 1px solid $grey-color;
 
   &.hidden {
     transform: translateY(-100%);

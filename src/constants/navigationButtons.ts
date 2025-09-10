@@ -1,5 +1,8 @@
 export const navigationButtons = [
-  { title: "КАТАЛОГ", link: "catalog" },
-  { title: "КОНСУЛЬТАЦІЯ", link: "/quiz" },
-  { title: "КОНТАКТИ", link: "/contacts" }
+  { title: "HOME", link: "/" },
+  { title: "ABOUT", link: "/about" },
+  { title: "CATALOG", link: "catalog" },
+  { title: "OUR PROCESS", link: "/our-process" },
+  { title: "CONTACT", link: "/contacts" }
+
 ];

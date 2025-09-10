@@ -7,7 +7,7 @@
 }
 
 .footerLink {
-  color: $white-color;
+  color: $black-color;
   text-decoration: none;
   text-align: left;
   font-weight: 400;
@@ -15,16 +15,12 @@
 
   &:hover {
     text-decoration: underline;
-    color: $yellow-color;
+    color: $black-color;
   }
 }
 
-.footerLinks .footerLink:first-child {
-  color: $yellow-color;
-}
-
 .link {
-  color: #facc15;
+  color: $black-color;
   text-decoration: none;
 
   &:hover {

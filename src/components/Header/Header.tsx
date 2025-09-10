@@ -6,9 +6,7 @@ import { navigationButtons } from "@/constants/navigationButtons";
 import NavButtons from "@/components/NavButtons/NavButton";
 import NavBar from "../NavBar/NavBar";
 import Link from "next/link";
-import CallButton from "../CallButton/CallButton";
 import CartButton from "../CartButton/CartButton";
-import { phoneNumber } from "@/constants/contacts";
 import BurgerBtn from "../BurgerBtn/BurgerBtn";
 import { useScrollHeader } from "@/hooks/useScrollHeader";
 
@@ -42,13 +40,6 @@ const Header = () => {
           </NavBar>
 
           <div className={styles.active_btns}>
-            <Link
-              aria-label="Call"
-              className={styles.call_btn}
-              href={`tel:${phoneNumber}`}
-            >
-              <CallButton phoneNumber={phoneNumber} />
-            </Link>
             <Link aria-label="Cart" className={styles.cart_btn} href="/cart">
               <CartButton cart={[]} />
             </Link>

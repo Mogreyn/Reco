@@ -17,12 +17,12 @@ const PAYMENT_ICON = {
 
 const Footer = ({ className }: FooterProps) => {
   const combinedClass = className
-    ? `${styles.header} ${className}`
-    : styles.header;
+    ? `${styles.footer} ${className}`
+    : styles.footer;
   return (
-    <footer className="container">
-      <div className={`${combinedClass} ${styles.footer}`}>
-        <div className={styles.footer_container}>
+    <footer className={styles.footer_container}>
+      <div className={combinedClass}>
+        <div className={styles.footer_upper}>
           <div className={styles.textContainer}>
             <div className={styles.logo}>
               <Link className={styles.linkLogo} href="/">
@@ -41,6 +41,16 @@ const Footer = ({ className }: FooterProps) => {
                 email={email}
                 phoneNumber={phoneNumber}
               />
+              <div className={styles.payment_icon_container}>
+                <Image
+                  alt={PAYMENT_ICON.alt}
+                  className={styles.payment_icon}
+                  height={PAYMENT_ICON.height}
+                  src={PAYMENT_ICON.src}
+                  width={PAYMENT_ICON.width}
+                  style={{ width: "auto" }}
+                />
+              </div>
             </div>
             <div className={styles.footerLinks}>
               <FooterLinks />
@@ -52,30 +62,13 @@ const Footer = ({ className }: FooterProps) => {
               </SocialMediaHub>
             </div>
           </div>
-
-          <div className={styles.payment_icon_container}>
-            <Image
-              alt={PAYMENT_ICON.alt}
-              className={styles.payment_icon}
-              height={PAYMENT_ICON.height}
-              src={PAYMENT_ICON.src}
-              width={PAYMENT_ICON.width}
-              style={{ width: "auto" }}
-            />
-          </div>
         </div>
         <div className={styles.authorRights}>
-          <p>© 2025 RECO. Всі права захищені.</p>
+          <p>© 2025 Nina Candle. All rights reserved.</p>
           <div className={styles.policyLinks}>
-            <Link href="/policy/privacy-policy">Політика конфіденційності</Link>
+            <Link href="/policy/privacy-policy">Privacy Policy</Link>
             &nbsp;|&nbsp;
-            <Link href="/policy/offer">Умови використання</Link>
-            &nbsp;|&nbsp;
-            <Link href="/policy/delivery-terms"> Умови доставки</Link>
-            &nbsp;|&nbsp;
-            <Link href="/policy/payment-terms"> Умови оплати</Link>
-            &nbsp;|&nbsp;
-            <Link href="/policy/refund-policy"> Умови повернення коштів </Link>
+            <Link href="/policy/offer">Terms of Use</Link>
           </div>
         </div>
       </div>

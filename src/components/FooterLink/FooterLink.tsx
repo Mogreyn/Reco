@@ -5,9 +5,11 @@ import styles from "./FooterLink.module.scss";
 import Link from "next/link";
 
 const footerButtons: FooterButton[] = [
-  { title: "Каталог", link: "catalog" },
-  { title: "Консультація", link: "/quiz" },
-  { title: "Контакти", link: "/contacts" }
+  { title: "HOME", link: "/" },
+  { title: "ABOUT", link: "/about" },
+  { title: "CATALOG", link: "catalog" },
+  { title: "OUR PROCESS", link: "/our-process" },
+  { title: "CONTACT", link: "/contacts" }
 ];
 
 const FooterLinks: React.FC = () => {
