@@ -3,7 +3,7 @@
 @mixin features-article {
   background-repeat: no-repeat;
   background-size: contain;
-  color: $white-color;
+  color: $black-color;
   position: relative;
   z-index: 1;
   transition: transform $transition-speed $transition-style;
@@ -140,11 +140,9 @@
 
 .featuresImgContainer {
   position: absolute;
-  aspect-ratio: 383 / 457;
-  left: 35%;
+  left: 25%;
   height: 100%;
-  width: 300px;
-  rotate: -20deg;
+  width: 500px;
 
   @media (max-width: $breakpoint-tablet) {
     left: 31%;

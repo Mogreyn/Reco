@@ -2,7 +2,6 @@ import classNames from "classnames";
 import type { FeaturesSectionProps } from "./types/FeaturesSection.types";
 import Image from "next/image";
 import styles from "./FeaturesSection.module.scss";
-import HighlightText from "../HighLightText/HighLightText";
 import BackgroundCircles from "../BackgroundCircles/BackgroundCircles";
 
 const FeaturesSection = ({ className }: FeaturesSectionProps) => {
@@ -10,16 +9,16 @@ const FeaturesSection = ({ className }: FeaturesSectionProps) => {
 
   return (
     <section className="container" data-testid="features-section">
+      <h1>OUR BENEFITS</h1>
       <div className={classes}>
         <BackgroundCircles className={styles.backgroundCircles} />
-        <h2>Особливості продукту</h2>
 
         <div className={styles.featuresLeftSide}>
           <article className={styles.featuresArticleLeft}>
-            <h3>Турбота</h3>
             <p className={styles.featuresArticleLeftText}>
-              <HighlightText>Турбота </HighlightText>
-              про волосся навіть у разі сильного пошкодження.
+              From cozy nights to special gatherings, our candles create an
+              inviting atmosphere while adding a timeless, handcrafted touch to
+              your space.
             </p>
           </article>
 
@@ -31,7 +30,7 @@ const FeaturesSection = ({ className }: FeaturesSectionProps) => {
             <Image
               fill
               alt="recoil"
-              src="/images/sections/features/reco.png"
+              src="/images/sections/features/feature.png"
               style={{ objectFit: "contain" }}
             />
           </div>
@@ -39,20 +38,17 @@ const FeaturesSection = ({ className }: FeaturesSectionProps) => {
 
         <div className={styles.featuresRightSide}>
           <article className={styles.featuresArticleRightTop}>
-            <h3>Простота у використанні</h3>
             <p className={styles.featuresArticleRightTopText}>
-              Ідеальний вибір як{" "}
-              <HighlightText>для професійних майстрів</HighlightText>, так і{" "}
-              <HighlightText>для домашнього догляду</HighlightText>. Зручне та
-              зрозуміле використання без зайвих зусиль.
+              Designed for hours of enjoyment, each candle provides a steady,
+              even burn that lets you savor the warm glow and aroma longer.
             </p>
           </article>
 
           <article className={styles.featuresArticleRightBottom}>
             <p className={styles.featuresArticleRightBottomText}>
-              Комплексний догляд RECO — це{" "}
-              <HighlightText>захист, зволоження та живлення</HighlightText>{" "}
-              волосся щодня.
+              Our candles are crafted from natural, eco-friendly waxes that burn
+              cleanly without releasing harmful toxins. Safer for your home,
+              healthier for the air you breathe.
             </p>
           </article>
         </div>

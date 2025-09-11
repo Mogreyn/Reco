@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import dynamic from "next/dynamic";
 import type { Product } from "@/types/types";
 import { fetchProducts } from "@/services/products";
@@ -7,6 +7,8 @@ import HeroSection from "@/components/HeroSection/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection/FeaturesSection";
 import styles from "./page.module.scss";
 import Forma from "@/components/Forma/Forma";
+import AboutSection from "@/components/AboutSection/AboutSection";
+import FeedbackSection from "@/components/FeedbackSection/FeedbackSection";
 
 const ProductCard = dynamic(
   () => import("@/components/ProductCard3/ProductCard"),
@@ -58,14 +60,14 @@ export const MainPageClient = () => {
       <FeaturesSection />
 
       <ProductCard products={products} showButton={true} />
+      <AboutSection />
 
-      <Forma />
 
-      {/* <Suspense
+      <Suspense
         fallback={<div className={styles.loading}>Отзывы грузятся...</div>}
       >
         <FeedbackSection />
-      </Suspense> */}
+      </Suspense>
     </>
   );
 };

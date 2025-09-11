@@ -30,11 +30,11 @@ const HeroButtons = () => {
               stroke="none"
             />
           </div>
-          <span className={styles.button__text}>ЗАМОВИТИ</span>
+          <span className={styles.button__text}>SHOP NOW</span>
         </Button>
       </Link>
       <Link href="/about">
-        {/* <Button size={getButtonSize()} variant="secondary">
+        <Button size={getButtonSize()} variant="secondary">
           <div className={styles.secondСontainer}>
             <Icon
               className={styles.SecondIcon}
@@ -44,8 +44,8 @@ const HeroButtons = () => {
               stroke="none"
             />
           </div>
-          <span className={styles.moreInfoText}>ПРО НАС</span>
-        </Button> */}
+          <span className={styles.moreInfoText}>LEARN MORE</span>
+        </Button>
       </Link>
     </div>
   );
