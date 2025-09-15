@@ -2,22 +2,19 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import type { Product } from "@/types/types";
 import { useCartContext } from "@/hooks/useCartContext";
 import styles from "./ProductCard.module.scss";
-import HighlightText from "../HighLightText/HighLightText";
 import Button from "../Button/Button";
 import ButtonArrow from "../ArowButton/ArowButton";
-import Icon from "../Icon/Icon";
 import Image from "next/image";
 import Carousel from "react-spring-3d-carousel";
 import { useSwipeable } from "react-swipeable";
 import Link from "next/link";
-import ProductSizeSelector from "../ProductSizeSelector/ProductSizeSelector";
 
-interface ProductCardProps {
+export interface ProductCardProps {
   products: Product[];
   showButton?: boolean;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ products, showButton }) => {
+const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(() =>
@@ -26,58 +23,52 @@ const ProductCard: React.FC<ProductCardProps> = ({ products, showButton }) => {
   const [offsetRadius, setOffsetRadius] = useState(2);
   const { addToCart } = useCartContext();
   const [addedImpact, setAddedImpact] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
-  const currentProduct = products[currentIndex];
+  // Отображаем все товары
+  const allProducts = useMemo(() => products, [products]);
+  const currentProduct = allProducts[currentIndex] || {};
+
   useEffect(() => {
-    const defaultSize = products[currentIndex]?.sizes?.[0]?.size ?? null;
+    const defaultSize = currentProduct?.sizes?.[0]?.size ?? null;
     setSelectedSize(defaultSize);
-  }, [currentIndex, products]);
+  }, [currentIndex, currentProduct]);
 
   useEffect(() => {
     const handleResize = () => {
       if (typeof window === "undefined") return;
-
       const width = window.innerWidth;
       setIsMobile(width <= 768);
       setOffsetRadius(width >= 768 && width <= 1225 ? 4 : 2);
     };
-
     handleResize();
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleNext = () =>
-    setCurrentIndex((prev) => (prev + 1) % products.length);
+    setCurrentIndex((prev) => (prev + 1) % allProducts.length);
   const handlePrev = () =>
-    setCurrentIndex((prev) => (prev - 1 + products.length) % products.length);
+    setCurrentIndex((prev) => (prev - 1 + allProducts.length) % allProducts.length);
 
   const handleAddToCart = useCallback(() => {
     if (!selectedSize || !currentProduct.sizes) {
       return alert("Будь ласка, виберіть розмір!");
     }
-    if (!products?.length) return;
+    if (!allProducts.length) return;
 
     const selectedSizeObj = currentProduct.sizes.find(
       (s) => s.size === selectedSize
     );
     if (!selectedSizeObj) return;
 
-    const newItem = {
-      id: currentProduct.id,
-      name: currentProduct.name,
-      size: selectedSize,
-      price: selectedSizeObj.price,
-      photo: currentProduct.photo
-    };
+    for (let i = 0; i < quantity; i++) {
+      addToCart(currentProduct, selectedSize);
+    }
 
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    localStorage.setItem("cart", JSON.stringify([...cart, newItem]));
-    addToCart(currentProduct, selectedSize);
     setAddedImpact(true);
     setTimeout(() => setAddedImpact(false), 1200);
-  }, [selectedSize, currentProduct, addToCart, products?.length]);
+  }, [selectedSize, currentProduct, addToCart, allProducts.length, quantity]);
 
   const renderDescription = () => (
     <div className={styles.descriptionContainer}>
@@ -92,15 +83,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ products, showButton }) => {
 
     return (
       <p className={styles.priceContainer}>
-        <strong className={styles.price}> </strong>
-        {selectedSizeObj ? `${selectedSizeObj.price} грн` : "Оберіть розмір"}
+        <strong className={styles.price}></strong>
+        {selectedSizeObj ? `${selectedSizeObj.price * quantity} грн` : "Оберіть розмір"}
       </p>
     );
   };
 
   const slides = useMemo(
     () =>
-      products.map((product, index) => ({
+      allProducts.map((product, index) => ({
         key: product.id,
         content:
           index === currentIndex ? (
@@ -108,111 +99,92 @@ const ProductCard: React.FC<ProductCardProps> = ({ products, showButton }) => {
               key={index}
               href={`/${product._id}`}
               className={`${styles.slide} ${styles.active}`}
-              style={{ textDecoration: 'none', color: 'inherit' }}
+              style={{ textDecoration: "none", color: "inherit" }}
               tabIndex={-1}
             >
-              <div>
-                {product.isNewProduct && (
-                  <div className={styles.newBadge}>NEW</div>
-                )}
-              </div>
+              <Image
+                alt={product.name}
+                className={styles.productImage}
+                height={300}
+                width={300}
+                quality={80}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                src={product.photo}
+              />
 
-            <Image
-              alt={product.name}
-              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQtJSAkKCAkKCAkKCAkKCAkKCAkKCAkKCAkKCAkKCAkKCAkKCAkKCAkKCD/2wBDARUXFy4eHhs4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4OD/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-              className={styles.productImage}
-              height={300}
-              placeholder="blur"
-              quality={80}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              src={product.photo}
-              width={300}
-            />
-
-            {index === currentIndex && showButton && (
               <div className={styles.buttonPlace}>
                 {isMobile ? (
-                  <Button
-                    className={`addToCart${addedImpact ? ' added' : ''}`}
-                    disabled={!selectedSize || addedImpact}
-                    size="m"
-                    variant="primary"
-                    onClick={handleAddToCart}
-                    style={addedImpact ? { backgroundColor: '#3ecf4a', color: '#fff', transition: 'background 0.3s, color 0.3s' } : {}}
-                  >
-                    {addedImpact ? 'Додано!' : 'ДОДАТИ В КОШИК'}
-                  </Button>
-                ) : (
-                  <Link href={`/catalog`}>
+                  <>
+                    <div className={styles.quantityControls}>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setQuantity((q) => Math.max(1, q - 1));
+                        }}
+                      >
+                        −
+                      </button>
+                      <span>{quantity}</span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setQuantity((q) => q + 1);
+                        }}
+                      >
+                        +
+                      </button>
+                    </div>
                     <Button
-                      className={styles.moreButton}
-                      size="l"
-                      variant="secondary"
+                      className={`addToCart${addedImpact ? " added" : ""}`}
+                      disabled={!selectedSize || addedImpact}
+                      size="m"
+                      variant="primary"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleAddToCart();
+                      }}
+                      style={
+                        addedImpact
+                          ? {
+                              backgroundColor: "#3ecf4a",
+                              color: "#fff",
+                              transition: "background 0.3s, color 0.3s"
+                            }
+                          : {}
+                      }
                     >
-                      <span className={styles.moreButtonText}>
-                        БІЛЬШЕ ТОВАРІВ
-                      </span>
+                      {addedImpact ? "Додано!" : "ДОДАТИ В КОШИК"}
+                    </Button>
+                  </>
+                ) : (
+                  <Link href={`/${product._id}`}>
+                    <Button className={styles.moreButton} size="l" variant="secondary">
+                      <span className={styles.moreButtonText}>VIEW DETAILS</span>
                     </Button>
                   </Link>
                 )}
               </div>
-            )}
-          </Link>
+            </Link>
           ) : (
-            <div
-              key={index}
-              className={styles.slide}
-            >
-              <div>
-                {product.isNewProduct && (
-                  <div className={styles.newBadge}>NEW</div>
-                )}
-              </div>
-
-            <Image
-              alt={product.name}
-              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQtJSAkKCAkKCAkKCAkKCAkKCAkKCAkKCAkKCAkKCAkKCAkKCAkKCAkKCD/2wBDARUXFy4eHhs4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4OD/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-              className={styles.productImage}
-              height={300}
-              placeholder="blur"
-              quality={80}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              src={product.photo}
-              width={300}
-            />
-
-            {index === currentIndex && showButton && (
-              <div className={styles.buttonPlace}>
-                {isMobile ? (
-                  <Button
-                    className={`addToCart${addedImpact ? ' added' : ''}`}
-                    disabled={!selectedSize || addedImpact}
-                    size="m"
-                    variant="primary"
-                    onClick={handleAddToCart}
-                    style={addedImpact ? { backgroundColor: '#3ecf4a', color: '#fff', transition: 'background 0.3s, color 0.3s' } : {}}
-                  >
-                    {addedImpact ? 'Додано!' : 'ДОДАТИ В КОШИК'}
-                  </Button>
-                ) : (
-                  <Link href={`/catalog`}>
-                    <Button
-                      className={styles.moreButton}
-                      size="l"
-                      variant="secondary"
-                    >
-                      <span className={styles.moreButtonText}>
-                        БІЛЬШЕ ТОВАРІВ
-                      </span>
-                    </Button>
-                  </Link>
-                )}
-              </div>
-            )}
-          </div>
+            <div key={index} className={styles.slide}>
+              <Image
+                alt={product.name}
+                className={styles.productImage}
+                height={300}
+                width={300}
+                quality={80}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                src={product.photo}
+              />
+            </div>
           )
       })),
-    [products, currentIndex, selectedSize, isMobile, handleAddToCart, showButton, addedImpact]
+    [allProducts, currentIndex, selectedSize, isMobile, handleAddToCart, addedImpact, quantity]
   );
 
   const swipeHandlers = useSwipeable({
@@ -245,54 +217,56 @@ const ProductCard: React.FC<ProductCardProps> = ({ products, showButton }) => {
           />
         </div>
         <div className={styles.info}>
-          <HighlightText>
-            <h2>{currentProduct.name}</h2>
-          </HighlightText>
+          <h2>{currentProduct.name}</h2>
           {isMobile ? (
             <>
               {renderPrice()}
-              <ProductSizeSelector
-                selectedSize={selectedSize}
-                sizes={currentProduct.sizes}
-                onSizeChange={setSelectedSize}
-              />
               {renderDescription()}
             </>
           ) : (
             <>
-              <div>
-                {" "}
-                {renderDescription()}
-                {renderPrice()}
-              </div>
-
-              <ProductSizeSelector
-                selectedSize={selectedSize}
-                sizes={currentProduct.sizes}
-                onSizeChange={setSelectedSize}
-              />
+              {renderDescription()}
+              {renderPrice()}
             </>
           )}
 
           {!isMobile && (
-            <Button
-              className={`addToCart${addedImpact ? ' added' : ''}`}
-              disabled={!selectedSize || addedImpact}
-              size="pr"
-              variant="primary"
-              onClick={handleAddToCart}
-              style={addedImpact ? { backgroundColor: '#3ecf4a', color: '#fff', transition: 'background 0.3s, color 0.3s' } : {}}
-            >
-              <div className={styles.iconContainer}>
-                <Icon
-                  fill="white"
-                  name="icon-arrow-up-right2"
-                  size={24}
-                  stroke="none"
-                />
+            <div className={styles.actions}>
+              <div className={styles.quantityControlsDesktop}>
+                <button
+                  type="button"
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                >
+                  −
+                </button>
+                <span>{quantity}</span>
+                <button type="button" onClick={() => setQuantity((q) => q + 1)}>
+                  +
+                </button>
               </div>
-              {addedImpact ? 'Додано!' : 'ДОДАТИ В КОШИК'}
-            </Button>
+              <Button
+                className={`addToCart${addedImpact ? " added" : ""}`}
+                disabled={!selectedSize || addedImpact}
+                size="pr"
+                variant="primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleAddToCart();
+                }}
+                style={
+                  addedImpact
+                    ? {
+                        backgroundColor: "#3ecf4a",
+                        color: "#fff",
+                        transition: "background 0.3s, color 0.3s"
+                      }
+                    : {}
+                }
+              >
+                {addedImpact ? "ADDED" : "ADD TO CART"}
+              </Button>
+            </div>
           )}
         </div>
       </div>
@@ -300,4 +274,4 @@ const ProductCard: React.FC<ProductCardProps> = ({ products, showButton }) => {
   );
 };
 
-export default ProductCard;
+export default CatalogProductCard;

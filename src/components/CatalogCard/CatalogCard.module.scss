@@ -3,7 +3,7 @@
 .card {
   border: $main-border;
   border-radius: 20px;
-  background: radial-gradient(rgba(80, 71, 42, 1) 5%, rgba(0, 0, 0, 1) 100%);
+  background: $primary-yellow;
   position: relative;
   overflow: hidden;
   display: flex;

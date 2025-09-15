@@ -2,7 +2,7 @@
 @use "@/styles/mixins.scss" as *;
 
 .title {
-  @include text-outline;
+  font-size: large;
 }
 
 .productsList {

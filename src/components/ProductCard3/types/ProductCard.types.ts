@@ -8,4 +8,5 @@ export interface Product {
 
 export interface ProductCardProps {
   products: Product[];
+  
 }

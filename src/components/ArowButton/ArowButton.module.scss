@@ -1,8 +1,10 @@
+@use "@/styles/variables" as *;
+
 .buttonArrow {
   position: relative;
   width: 64px;
   height: 64px;
-  background-color: rgba(251, 192, 0, 1);
+  background-color: $button-primary;
   border-radius: 50%;
   display: flex;
   justify-content: center;

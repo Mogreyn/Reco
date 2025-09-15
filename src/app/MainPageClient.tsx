@@ -1,19 +1,15 @@
 "use client";
 import React, { useEffect, useState, Suspense } from "react";
-import dynamic from "next/dynamic";
 import type { Product } from "@/types/types";
 import { fetchProducts } from "@/services/products";
+import ProductCard from "@/components/ProductCard3/ProductCard"
 import HeroSection from "@/components/HeroSection/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection/FeaturesSection";
 import styles from "./page.module.scss";
-import Forma from "@/components/Forma/Forma";
 import AboutSection from "@/components/AboutSection/AboutSection";
 import FeedbackSection from "@/components/FeedbackSection/FeedbackSection";
 
-const ProductCard = dynamic(
-  () => import("@/components/ProductCard3/ProductCard"),
-  { ssr: false }
-);
+
 
 // const FeedbackSection = dynamic(
 //   () => import("@/components/FeedbackSection/FeedbackSection"),

@@ -25,7 +25,7 @@
 
 /* Новые бейджики */
 .newBadge {
-  background-color: $yellow-color;
+  background-color: $white-color;
   color: $black-color;
   padding: 10px 15px;
   border-radius: 60px;
@@ -68,7 +68,6 @@
   overflow: hidden;
   max-width: 1224px;
   height: 512px;
-  margin: 20px;
   gap: 70px;
   z-index: 10;
   transition:
@@ -96,7 +95,6 @@
   justify-content: center;
   border-radius: 20px;
   border: $main-border;
-  opacity: 0.8;
   transition: opacity 0.5s ease-out;
 
   @include mobile {
@@ -126,28 +124,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 16px;
     position: absolute;
     bottom: 0;
     width: 396px;
     height: 120px;
     border-radius: 20px;
     border: $main-border;
-    background-color: $black-color;
+    background-color: $white-color;
 
     @include mobile {
       max-width: 100%;
       height: 90px;
+      gap: 12px;
     }
   }
 
   &.active {
     opacity: 1;
-    background: linear-gradient(
-      149deg,
-      rgba(80, 71, 42, 1) 5%,
-      rgba(43, 41, 32, 1) 50%,
-      rgba(0, 0, 0, 1) 100%
-    );
+    background: $primary-yellow;
   }
 }
 
@@ -202,6 +197,34 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+
+    .addToCart {
+      margin-top: 10px;
+      width: 100%;
+      text-align: left;
+      background-color: yellow;
+      color: black;
+      font-weight: bold;
+      visibility: visible;
+      opacity: 1;
+      cursor: pointer;
+      box-sizing: border-box;
+
+      @include mobile {
+        width: 90%;
+        margin: 10px auto;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      @include mobile {
+        font-size: 14px;
+        padding: 8px;
+      }
+    }
   }
 
   .arrowLeft,
@@ -259,10 +282,47 @@
     margin: 0 auto;
   }
 }
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Ссылка VIEW DETAILS под каруселью */
+.viewDetails {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -70px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  width: 396px;
+  border: 1px solid #907272;
+  border-radius: 70px;
+  color: $black-color;
+  text-decoration: none;
+  font-weight: 600;
+  background: $white-color;
+
+  @include mobile {
+    position: static;
+    transform: none;
+    width: 90%;
+    height: 56px;
+    margin: 10px auto 0;
+  }
+}
+
+/* Пилюля VIEW DETAILS внутри активной карточки (десктоп) */
+/* Кнопка как в ProductCard3 */
+.moreButton {
+  padding: 0 24px;
+}
 
 /* Описание товара */
 .moreButtonText {
-  color: $white-color;
   margin-right: 8px;
   font-size: 16px;
 }
@@ -270,6 +330,9 @@
 /* Цена */
 .priceContainer {
   margin-top: -37px;
+  font-weight: bold;
+  font-size: 24px;
+
 
   @include mobile {
     left: 0;
@@ -292,6 +355,7 @@
     display: none;
   }
 }
+
 
 .info {
   flex: 1;
@@ -322,8 +386,7 @@
   }
 
   p {
-    font-size: 1rem;
-    color: $white-color;
+    color: $black-color;
   }
 
   .sizes {
@@ -445,49 +508,67 @@
   }
 }
 
-@keyframes impactAdded {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 #3ecf4a44;
+/* Количество (мобайл) */
+.quantityControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 10px;
+  border: 1px solid #907272;
+  border-radius: 28px;
+  padding: 10px 18px;
+  background: transparent;
+
+  button {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    color: $black-color;
+    font-size: 22px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   }
-  50% {
-    transform: scale(1.08);
-    box-shadow: 0 0 16px 4px #3ecf4a88;
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 #3ecf4a00;
+
+  span {
+    min-width: 20px;
+    text-align: center;
+    font-weight: 600;
   }
 }
 
-// Глобальный стиль для кнопки добавления в корзину
-.addToCart {
-  margin-top: 10px;
-  width: 100%;
-  text-align: left;
-  background-color: yellow;
-  color: black;
-  font-weight: bold;
-  visibility: visible;
-  opacity: 1;
-  cursor: pointer;
-  box-sizing: border-box;
+/* Количество (десктоп) */
+.quantityControlsDesktop {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  border: 1px solid #907272;
+  border-radius: 28px;
+  padding: 14px 18px;
+  background: transparent;
 
-  @include mobile {
-    width: 90%;
-    margin: 10px auto;
-    font-size: 14px;
-    padding: 8px;
+  button {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    color: $black-color;
+    font-size: 22px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   }
 
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  &.added {
-    background-color: #3ecf4a !important;
-    color: #fff !important;
-    animation: impactAdded 0.8s;
+  span {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
   }
 }

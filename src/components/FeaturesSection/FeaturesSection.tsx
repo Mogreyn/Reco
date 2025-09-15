@@ -29,7 +29,7 @@ const FeaturesSection = ({ className }: FeaturesSectionProps) => {
           <div className={styles.imageWrapper}>
             <Image
               fill
-              alt="recoil"
+              alt="candle"
               src="/images/sections/features/feature.png"
               style={{ objectFit: "contain" }}
             />

@@ -37,19 +37,19 @@ const FeedbackForm = () => {
     <form className={styles.feedbackForm} onSubmit={handleSubmit(onSubmit)}>
       <div className={styles.feedbackInputContainer}>
         <InputLabel htmlFor="name" required={true}>
-          Ім&#39;я
+          FULL NAME
         </InputLabel>
         <input
           id="name"
           {...register("name", {
-            required: "Це поле обовʼязкове",
+            required: "Required",
             pattern: {
               value: /^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ'’ʼ\s]+$/,
-              message: "Імʼя повинно містити тільки букви"
+              message: "Must  have just letters"
             }
           })}
           className={`${styles.feedbackInput} ${errors.name ? styles.inputError : ""}`}
-          placeholder="Введіть ваше імʼя"
+          placeholder="Enter your full name"
           type="text"
         />
 
@@ -60,21 +60,21 @@ const FeedbackForm = () => {
 
       <div className={styles.feedbackInputContainer}>
         <InputLabel htmlFor="phoneNumber" required={true}>
-          Номер телефону
+          PHONE NUMBER
         </InputLabel>
 
         <div className={styles.phoneNumberInputContainer}>
           <input
             id="phoneNumber"
             {...register("phoneNumber", {
-              required: "Це поле обовʼязкове",
+              required: "Required",
               minLength: {
                 value: 17,
-                message: "Введіть повний номер"
+                message: "Enter full number"
               }
             })}
             className={`${styles.feedbackInput} ${errors.phoneNumber ? styles.inputError : ""}`}
-            placeholder="+380 __ ___ __ __"
+            placeholder="+480 __ ___ __ __"
             type="tel"
             onChange={(event) => handlePhoneChange(event, setValue)}
             onFocus={(event) => handlePhoneChange(event, setValue)}
@@ -107,7 +107,7 @@ const FeedbackForm = () => {
               stroke="none"
             />
           </div>
-          <span className={styles.feedbackButtonText}> НАДІСЛАТИ</span>
+          <span className={styles.feedbackButtonText}> SEND</span>
         </Button>
       </div>
     </form>

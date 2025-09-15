@@ -12,18 +12,16 @@ const FeedbackSection = () => {
           <div className={styles.formCircles} />
         </div>
         <BackgroundCircles className={styles.backgroundCircles} />
-        <div className={styles.feedbackArrow} />
         <h2 className={styles.feedbackTitle}>
-          Залиште свої дані, щоб отримати більше інформації
-        </h2>
+        LEAVE YOUR DETAILS AND WE WILL CONTACT YOU</h2>
         <div className={styles.feedbackContent}>
           <FeedbackForm />
           <div className={styles.feedbackImgContainer}>
             <Image
-              alt="recoil"
+              alt="candle"
               className={styles.feedbackImg}
               fill={true}
-              src="/images/sections/feedback/recoil.png"
+              src="/images/sections/features/feature.png"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>

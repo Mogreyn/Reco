@@ -25,6 +25,7 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
   const [offsetRadius, setOffsetRadius] = useState(2);
   const { addToCart } = useCartContext();
   const [addedImpact, setAddedImpact] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
   const newProducts = useMemo(() => products.filter(p => p.isNewProduct), [products]);
 
@@ -74,12 +75,13 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
       photo: currentProduct.photo
     };
 
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    localStorage.setItem("cart", JSON.stringify([...cart, newItem]));
-    addToCart(currentProduct, selectedSize);
+    // Add selected quantity to cart via context
+    for (let i = 0; i < quantity; i += 1) {
+      addToCart(currentProduct, selectedSize);
+    }
     setAddedImpact(true);
     setTimeout(() => setAddedImpact(false), 1200);
-  }, [selectedSize, currentProduct, addToCart, newProducts?.length]);
+  }, [selectedSize, currentProduct, addToCart, newProducts?.length, quantity]);
 
   const renderDescription = () => (
     <div className={styles.descriptionContainer}>
@@ -95,7 +97,7 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
     return (
       <p className={styles.priceContainer}>
         <strong className={styles.price}> </strong>
-        {selectedSizeObj ? `${selectedSizeObj.price} грн` : "Оберіть розмір"}
+        {selectedSizeObj ? `${selectedSizeObj.price * quantity} грн` : "Оберіть розмір"}
       </p>
     );
   };
@@ -128,8 +130,32 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
                 width={300}
               />
 
-              {isMobile && (
-                <div className={styles.buttonPlace}>
+              <div className={styles.buttonPlace}>
+                {isMobile ? (
+                  <>
+                  <div className={styles.quantityControls}>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setQuantity((q) => Math.max(1, q - 1));
+                      }}
+                    >
+                      −
+                    </button>
+                    <span>{quantity}</span>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setQuantity((q) => q + 1);
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
                   <Button
                     className={`addToCart${addedImpact ? ' added' : ''}`}
                     disabled={!selectedSize || addedImpact}
@@ -140,8 +166,15 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
                   >
                     {addedImpact ? 'Додано!' : 'ДОДАТИ В КОШИК'}
                   </Button>
-                </div>
-              )}
+                  </>
+                ) : (
+                  <Link href={`/${product._id}`}>
+                    <Button className={styles.moreButton} size="l" variant="secondary">
+                      <span className={styles.moreButtonText}>VIEW DETAILS</span>
+                    </Button>
+                  </Link>
+                )}
+              </div>
             </Link>
           ) : (
             <div
@@ -198,17 +231,10 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
           />
         </div>
         <div className={styles.info}>
-          <HighlightText>
             <h2>{currentProduct.name}</h2>
-          </HighlightText>
           {isMobile ? (
             <>
               {renderPrice()}
-              <ProductSizeSelector
-                selectedSize={selectedSize}
-                sizes={currentProduct.sizes}
-                onSizeChange={setSelectedSize}
-              />
               {renderDescription()}
             </>
           ) : (
@@ -217,33 +243,37 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
                 {renderDescription()}
                 {renderPrice()}
               </div>
-              <ProductSizeSelector
-                selectedSize={selectedSize}
-                sizes={currentProduct.sizes}
-                onSizeChange={setSelectedSize}
-              />
             </>
           )}
 
           {!isMobile && (
-            <Button
-              className={`addToCart${addedImpact ? ' added' : ''}`}
-              disabled={!selectedSize || addedImpact}
-              size="pr"
-              variant="primary"
-              onClick={e => { e.preventDefault(); e.stopPropagation(); handleAddToCart(); }}
-              style={addedImpact ? { backgroundColor: '#3ecf4a', color: '#fff', transition: 'background 0.3s, color 0.3s' } : {}}
-            >
-              <div className={styles.iconContainer}>
-                <Icon
-                  fill="white"
-                  name="icon-arrow-up-right2"
-                  size={24}
-                  stroke="none"
-                />
+            <div className={styles.actions}>
+              <div className={styles.quantityControlsDesktop}>
+                <button
+                  type="button"
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                >
+                  −
+                </button>
+                <span>{quantity}</span>
+                <button
+                  type="button"
+                  onClick={() => setQuantity((q) => q + 1)}
+                >
+                  +
+                </button>
               </div>
-              {addedImpact ? 'Додано!' : 'ДОДАТИ В КОШИК'}
-            </Button>
+              <Button
+                className={`addToCart${addedImpact ? ' added' : ''}`}
+                disabled={!selectedSize || addedImpact}
+                size="pr"
+                variant="primary"
+                onClick={e => { e.preventDefault(); e.stopPropagation(); handleAddToCart(); }}
+                style={addedImpact ? { backgroundColor: '#3ecf4a', color: '#fff', transition: 'background 0.3s, color 0.3s' } : {}}
+              >
+                {addedImpact ? 'ADDED' : 'ADD TO CART'}
+              </Button>
+            </div>
           )}
         </div>
       </div>
