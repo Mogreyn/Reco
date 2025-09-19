@@ -13,7 +13,13 @@ const HeroSection = ({ className }: HeroSectionProps) => {
   return (
     <section className="container">
       <div className={combinedClass} data-testid="hero-section">
-        <Image src="/images/sections/hero/hero.png" alt="Hero" fill className={styles.image} priority />
+        <Image
+          src="/images/sections/hero/hero.png"
+          alt="Hero"
+          fill
+          className={styles.image}
+          priority
+        />
         <div className={styles.hero_content}>
           <div className={styles.textField}>
             <h1 className={styles.slogan}>CREATE A GOZY ATHMOSPHERE</h1>

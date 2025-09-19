@@ -1,6 +1,7 @@
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import { CartProvider } from "@/context/CartContext";
+import { FavoritesProvider } from "@/context/FavoritesContext";
 import { Noto_Sans } from "next/font/google";
 import Script from "next/script";
 import "@/styles/reset.scss";
@@ -66,9 +67,11 @@ export default function DashboardLayout({
       </head>
       <body className={notoSans.className}>
         <CartProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
+          <FavoritesProvider>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </FavoritesProvider>
         </CartProvider>
       </body>
     </html>

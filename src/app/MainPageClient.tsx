@@ -1,15 +1,21 @@
 "use client";
 import React, { useEffect, useState, Suspense } from "react";
+import dynamic from "next/dynamic";
 import type { Product } from "@/types/types";
 import { fetchProducts } from "@/services/products";
-import ProductCard from "@/components/ProductCard3/ProductCard"
 import HeroSection from "@/components/HeroSection/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection/FeaturesSection";
 import styles from "./page.module.scss";
 import AboutSection from "@/components/AboutSection/AboutSection";
 import FeedbackSection from "@/components/FeedbackSection/FeedbackSection";
 
-
+const ProductCard = dynamic(
+  () => import("@/components/ProductCard3/ProductCard"),
+  {
+    ssr: false,
+    loading: () => <div className={styles.loading}>Loading products...</div>
+  }
+);
 
 // const FeedbackSection = dynamic(
 //   () => import("@/components/FeedbackSection/FeedbackSection"),
@@ -42,10 +48,6 @@ export const MainPageClient = () => {
     loadProducts();
   }, []);
 
-  if (loading) {
-    return <div className={styles.loading}>Loading products...</div>;
-  }
-
   if (error) {
     return <div className={styles.error}>{error}</div>;
   }
@@ -55,15 +57,12 @@ export const MainPageClient = () => {
       <HeroSection />
       <FeaturesSection />
 
-      <ProductCard products={products} showButton={true} />
+      {!loading && products.length > 0 && (
+        <ProductCard products={products} showButton={true} />
+      )}
       <AboutSection />
 
-
-      <Suspense
-        fallback={<div className={styles.loading}>Отзывы грузятся...</div>}
-      >
-        <FeedbackSection />
-      </Suspense>
+      <FeedbackSection />
     </>
   );
 };

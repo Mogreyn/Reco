@@ -2,8 +2,17 @@
 @use "@/styles/mixins.scss" as *;
 
 .contactsContainer {
+  display: flex;
+  flex-direction: column;
   margin-top: 150px;
   margin-bottom: 90px;
+  gap: 50px;
+}
+.textContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 0 25px;
 }
 
 .contacts {

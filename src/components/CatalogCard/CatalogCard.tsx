@@ -3,123 +3,87 @@
 import Image from "next/image";
 import styles from "./CatalogCard.module.scss";
 import Link from "next/link";
-import Icon from "../Icon/Icon";
 import type { CatalogCardProps } from "./types/CatalogCard.types";
 import { useState, useCallback, memo } from "react";
+import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
 
 const CatalogCard = memo(({ product }: CatalogCardProps) => {
-  const [selectedSize, setSelectedSize] = useState<string | null>(
-    product.sizes?.[0]?.size || null
-  );
-
   const [showSizeWarning, setShowSizeWarning] = useState(false);
   const [addedImpact, setAddedImpact] = useState(false);
   const { addToCart } = useCart();
-
-  const handleSizeChange = useCallback(
-    (event: React.ChangeEvent<HTMLSelectElement>) => {
-      setSelectedSize(event.target.value);
-    },
-    []
-  );
+  const { toggleFavorite, isFavorite } = useFavorites();
 
   const handleBuyClick = useCallback(() => {
-    if (!selectedSize) {
-      setShowSizeWarning(true);
-      setTimeout(() => setShowSizeWarning(false), 3000);
-      return;
-    }
-
-    addToCart(product, selectedSize);
+    addToCart(product, "");
     setAddedImpact(true);
     setTimeout(() => setAddedImpact(false), 1200);
-  }, [selectedSize, addToCart, product]);
+  }, [addToCart, product]);
 
-  const getSelectedSizePrice = useCallback(() => {
-    if (!selectedSize || !product.sizes) return null;
-    const selectedSizeObj = product.sizes.find((s) => s.size === selectedSize);
-    return selectedSizeObj?.price || null;
-  }, [selectedSize, product.sizes]);
-
-  const renderSizes = useCallback(
-    () => (
-      <>
-        {product.sizes?.length ? (
-          <select
-            className={styles.sizeSelect}
-            value={selectedSize || ""}
-            onChange={handleSizeChange}
-            onMouseDown={e => e.stopPropagation()}
-            onClick={e => { e.preventDefault(); e.stopPropagation(); }}
-          >
-            {product.sizes.map(({ size }) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <div>Розміри не доступні для цього товару.</div>
-        )}
-      </>
-    ),
-    [product.sizes, selectedSize, handleSizeChange]
-  );
+  const getPrice = useCallback(() => {
+    if (typeof (product as any).price === "number")
+      return (product as any).price as number;
+    if (product.sizes?.length) {
+      return product.sizes.reduce(
+        (min, s) => (s.price < min ? s.price : min),
+        product.sizes[0].price
+      );
+    }
+    return null;
+  }, [product]);
 
   return (
-    <Link href={`/${product._id}`} className={styles.card} data-testid="catalog-card" style={{ textDecoration: 'none', color: 'inherit' }}>
-      <div className={styles.imageContainer}>
-        <Image
-          alt={product.name}
-          height={300}
-          loading="lazy"
-          quality={75}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          src={product.photo || "/fallback-image.jpg"}
-          width={400}
-        />
-      </div>
-
-      {showSizeWarning && (
-        <div className={styles.sizeWarning}>
-          Будь ласка, оберіть розмір перед покупкою.
+    <div>
+      <Link
+        href={`/${product._id}`}
+        className={styles.card}
+        data-testid="catalog-card"
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        <div className={styles.imageContainer}>
+          <Image
+            alt={product.name}
+            height={300}
+            loading="lazy"
+            quality={75}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            src={product.photo || "/fallback-image.jpg"}
+            width={400}
+          />
         </div>
-      )}
+        <button
+          type="button"
+          className={styles.infoBtn}
+          aria-label="Toggle favorite"
+          onClick={(e) => { e.preventDefault(); toggleFavorite(product); }}
+        >
+          <span className={styles.infoBtnIcon}>{isFavorite(product.id) ? "❤" : "♡"}</span>
+        </button>
 
-      <div className={styles.badgeContainer}>
-        {product.badgeInfo && (
-          <span className={styles.saleBadge}>{product.badgeInfo}</span>
+        {showSizeWarning && (
+          <div className={styles.sizeWarning}>Please try again.</div>
         )}
-        {/* <span className={styles.typeBadge}>{product.type}</span> */}
-      </div>
+
+        <div className={styles.badgeContainer}>
+          {product.badgeInfo && (
+            <span className={styles.saleBadge}>{product.badgeInfo}</span>
+          )}
+          {/* <span className={styles.typeBadge}>{product.type}</span> */}
+        </div>
+      </Link>
 
       <div className={styles.productDetailsContainer}>
         <header className={styles.infoContainer}>
           <h3 className={styles.productName}>{product.name}</h3>
         </header>
-
-        <div className={styles.productAction}>
-          <p className={styles.productType}>{product.shortDescription}</p>
-          <form className={styles.productSizeForm}>{renderSizes()}</form>
-          <div className={styles.productBtnContainer}>
-            <button
-              className={styles.buyBtn + (addedImpact ? ' ' + styles.added : '')}
-              type="button"
-              onClick={e => { e.preventDefault(); handleBuyClick(); }}
-              disabled={addedImpact}
-              style={addedImpact ? { backgroundColor: '#3ecf4a', color: '#fff', transition: 'background 0.3s, color: 0.3s' } : {}}
-            >
-              {addedImpact
-                ? 'Додано!'
-                : getSelectedSizePrice()
-                  ? <>Купити за {getSelectedSizePrice()} грн</>
-                  : "Оберіть розмір"}
-            </button>
-          </div>
+        {/* RATING PLACEHOLDER */}
+        <div className={styles.productRating}>★★★★☆ (4.5/5)</div>
+        {/* PRICE */}
+        <div className={styles.productPrice}>
+          {getPrice() ? `$${getPrice()}` : "Price on request"}
         </div>
       </div>
-    </Link>
+    </div>
   );
 });
 
