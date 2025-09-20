@@ -5,25 +5,32 @@
   display: flex;
   width: 708px;
   margin: 0 auto;
+  align-items: flex-start; 
 }
 
 .cartList {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  gap: 20px;
+  background: $white-color;
+  border-radius: 20px;
+  border: $main-border;
+  height: auto; 
+  flex: 0 0 auto; 
+
 }
 
 /* --- Стили для отдельного товара в корзине --- */
 .cartItem {
   display: flex;
   justify-content: space-between;
-  background-color: $grey-color;
-  border-radius: 20px;
-  border: $main-border;
   max-width: 708px;
   min-height: 213px;
   align-items: center;
+  border-bottom: 1px solid $yellow-color;
+  &:last-child{
+    border: none;
+  }
 }
 
 /* --- Контейнер изображения товара --- */
@@ -53,6 +60,7 @@
   padding: 1rem;
   width: 506px;
   gap: 1rem;
+  color: $black-color;
 }
 
 .title {

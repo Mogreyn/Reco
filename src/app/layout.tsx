@@ -43,28 +43,7 @@ export default function DashboardLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        {/* Google Analytics (gtag.js) */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-CH59DFVHN7"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-585954066');
-          `}
-        </Script>
-        <Script id="google-analytics-event" strategy="afterInteractive">
-          {`
-            gtag('event', 'ads_conversion___1', {
-              // <event_parameters>
-            });
-          `}
-        </Script>
-      </head>
+      
       <body className={notoSans.className}>
         <CartProvider>
           <FavoritesProvider>

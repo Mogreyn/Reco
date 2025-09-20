@@ -1,7 +1,6 @@
 "use client";
 import type { CartItem } from "@/types/types";
 import { useCart } from "@/context/CartContext";
-import HighlightText from "@/components/HighLightText/HighLightText";
 import styles from "./CartItems.module.scss";
 import Image from "next/image";
 
@@ -54,7 +53,6 @@ const CartItems = () => {
                 />
               </div>
               <div className={styles.infoContainer}>
-                <HighlightText>
                   <p className={styles.title}>
                     {item.product.name}{" "}
                     <button
@@ -66,25 +64,19 @@ const CartItems = () => {
                       X
                     </button>
                   </p>
-                </HighlightText>
                 <p className={styles.description}>{item.product.description}</p>
 
                 <div className={styles.controlContainer}>
-                  {item.size && (
-                    <>
-                      <p>{item.size}</p>
-                      <p className={styles.price}>
-                        {(getItemPrice(item) * item.quantity).toLocaleString(
-                          "uk-UA",
-                          {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 2
-                          }
-                        )}{" "}
-                        грн
-                      </p>
-                    </>
-                  )}
+                  <p className={styles.price}>
+                    $ 
+                    {(getItemPrice(item) * item.quantity).toLocaleString(
+                      "uk-UA",
+                      {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2
+                      }
+                    )}{" "}
+                  </p>
                   <div className={styles.quantityControl}>
                     <button
                       className={styles.quantityButton}
