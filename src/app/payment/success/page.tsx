@@ -14,16 +14,16 @@ export default function PaymentSuccess() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Дякуємо за замовлення!</h1>
+      <h1 className={styles.title}>Thank you for your order!</h1>
       <p className={styles.message}>
-        Ваше замовлення успішно оплачено. Ми надіслали підтвердження на вашу електронну пошту.
+        Your order has been successfully paid. We have sent a confirmation to your email.
       </p>
       <button
         className={styles.button}
         onClick={() => router.push("/catalog")}
       >
-        Повернутися до каталогу
+        Return to Catalog
       </button>
     </div>
   );
-} 
+}

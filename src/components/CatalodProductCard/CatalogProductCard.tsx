@@ -27,12 +27,12 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
   const [addedImpact, setAddedImpact] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  const newProducts = useMemo(() => products.filter(p => p.isNewProduct), [products]);
+  const newProducts = useMemo(() => products, [products]);
 
   const currentProduct = newProducts[currentIndex] || {};
 
   useEffect(() => {
-    const defaultSize = newProducts[currentIndex]?.sizes?.[0]?.size ?? null;
+    const defaultSize = newProducts[currentIndex]?.selectedOptions?.[0] ?? null;
     setSelectedSize(defaultSize);
   }, [currentIndex, newProducts]);
 
@@ -57,23 +57,10 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
     setCurrentIndex((prev) => (prev - 1 + newProducts.length) % newProducts.length);
 
   const handleAddToCart = useCallback(() => {
-    if (!selectedSize || !currentProduct.sizes) {
+    if (!selectedSize) {
       return alert("Будь ласка, виберіть розмір!");
     }
     if (!newProducts?.length) return;
-
-    const selectedSizeObj = currentProduct.sizes.find(
-      (s) => s.size === selectedSize
-    );
-    if (!selectedSizeObj) return;
-
-    const newItem = {
-      id: currentProduct.id,
-      name: currentProduct.name,
-      size: selectedSize,
-      price: selectedSizeObj.price,
-      photo: currentProduct.photo
-    };
 
     // Add selected quantity to cart via context
     for (let i = 0; i < quantity; i += 1) {
@@ -90,14 +77,9 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
   );
 
   const renderPrice = () => {
-    const selectedSizeObj = selectedSize
-      ? currentProduct.sizes.find((s) => s.size === selectedSize)
-      : null;
-
     return (
       <p className={styles.priceContainer}>
-        <strong className={styles.price}> </strong>
-        {selectedSizeObj ? `${selectedSizeObj.price * quantity} грн` : "Оберіть розмір"}
+        {currentProduct.price ? `$ ${currentProduct.price * quantity} ` : "Оберіть розмір"}
       </p>
     );
   };
@@ -110,23 +92,19 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
           index === currentIndex ? (
             <Link
               key={index}
-              href={`/${product._id}`}
+              href={`/${product.id}`}
               className={`${styles.slide} ${styles.active}`}
               style={{ textDecoration: 'none', color: 'inherit' }}
               tabIndex={-1}
             >
-              <div>
-                {product.isNewProduct && (
-                  <div className={styles.newBadge}>NEW</div>
-                )}
-              </div>
+              
               <Image
                 alt={product.name}
                 className={styles.productImage}
                 height={300}
                 quality={80}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                src={product.photo}
+                src={product.mainImage}
                 width={300}
               />
 
@@ -168,7 +146,7 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
                   </Button>
                   </>
                 ) : (
-                  <Link href={`/${product._id}`}>
+                  <Link href={`/${product.id}`}>
                     <Button className={styles.moreButton} size="l" variant="secondary">
                       <span className={styles.moreButtonText}>VIEW DETAILS</span>
                     </Button>
@@ -182,9 +160,6 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
               className={styles.slide}
             >
               <div>
-                {product.isNewProduct && (
-                  <div className={styles.newBadge}>NEW</div>
-                )}
               </div>
               <Image
                 alt={product.name}
@@ -192,7 +167,7 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
                 height={300}
                 quality={80}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                src={product.photo}
+                src={product.mainImage}
                 width={300}
               />
             </div>

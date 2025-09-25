@@ -8,24 +8,24 @@ export default function PaymentError() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Помилка оплати</h1>
+      <h1 className={styles.title}>Payment Error</h1>
       <p className={styles.message}>
-        На жаль, виникла помилка при обробці вашого платежу. Будь ласка, спробуйте ще раз або оберіть інший спосіб оплати.
+        Unfortunately, an error occurred while processing your payment. Please try again or choose a different payment method.
       </p>
       <div className={styles.buttonContainer}>
         <button
           className={styles.button}
           onClick={() => router.push("/cart")}
         >
-          Повернутися до кошика
+          Return to Cart
         </button>
         <button
           className={`${styles.button} ${styles.secondaryButton}`}
           onClick={() => router.push("/catalog")}
         >
-          Повернутися до каталогу
+          Return to Catalog
         </button>
       </div>
     </div>
   );
-} 
+}

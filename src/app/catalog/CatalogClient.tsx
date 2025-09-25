@@ -25,14 +25,6 @@ const CatalogCardList = dynamic(
   }
 );
 
-// const FilterToggle = dynamic(
-//   () =>
-//     import("@/components/FilterToggle/FilterToggle").then((mod) => mod.default),
-//   {
-//     loading: () => <div>Loading...</div>
-//   }
-// );
-
 const BackgroundCircles = dynamic(
   () =>
     import("@/components/BackgroundCircles/BackgroundCircles").then(
@@ -47,6 +39,7 @@ export const CatalogClient = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  console.log(products);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -85,9 +78,13 @@ export const CatalogClient = () => {
         "@type": "Product",
         name: product.name,
         description: product.description,
-        image: product.photo,
-        price: Object.values(product.sizes)[0] || 0,
-        priceCurrency: "UAH"
+        image: product.mainImage || product.images?.[0] || null,
+        offers: {
+          "@type": "Offer",
+          price: Number(product.price) || 0,
+          priceCurrency: "UAH",
+          availability: product.stock ? "InStock" : "OutOfStock"
+        }
       }
     }))
   };
@@ -120,7 +117,6 @@ export const CatalogClient = () => {
           aria-label="Рекомендации"
           className={`container ${styles.recommendationContainer}`}
         >
-     
           <BackgroundCircles className={styles.backgroundCircles} />
         </section>
       </main>

@@ -1,10 +1,4 @@
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  photo: string;
-  sizes: Record<string, number>;
-}
+import type { Product } from "@/types/types";
 
 export interface ProductCardProps {
   products: Product[];

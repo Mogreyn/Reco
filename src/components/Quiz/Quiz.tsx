@@ -56,8 +56,8 @@ const Quiz: React.FC<QuizProps> = ({ data, onComplete }) => {
           const updated = { ...prev };
           recommendedProducts.forEach((product) => {
             const key = String(product.id);
-            if (!updated[key] && product.sizes?.length) {
-              updated[key] = product.sizes[0].size;
+            if (!updated[key] && product.selectedOptions?.length) {
+              updated[key] = product.selectedOptions[0];
             }
           });
           return updated;
@@ -95,16 +95,16 @@ const Quiz: React.FC<QuizProps> = ({ data, onComplete }) => {
   const renderSizes = useCallback(
     (product: Product) => (
       <>
-        {product.sizes?.length ? (
+        {product.selectedOptions?.length ? (
           <select
             className={styles.sizeSelect}
             value={selectedSizes[String(product.id)] || ""}
             onChange={(e) => handleSizeChange(product.id, e.target.value)}
           >
             <option value="">Оберіть розмір</option>
-            {product.sizes.map(({ size }) => (
-              <option key={size} value={size}>
-                {size}
+            {product.selectedOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
               </option>
             ))}
           </select>
@@ -197,10 +197,10 @@ const Quiz: React.FC<QuizProps> = ({ data, onComplete }) => {
           ? {
               ...product,
               score: result.score,
-              photoProduct: product.photo,
-              price: product.sizes?.[0]?.price || 0,
-              isNew: product.isNewProduct,
-              volume: product.sizes?.[0]?.size || ""
+              photoProduct: product.mainImage,
+              price: product.price,
+              isNew: false,
+              volume: product.selectedOptions?.[0] || ""
             }
           : null;
       })
@@ -264,22 +264,14 @@ const Quiz: React.FC<QuizProps> = ({ data, onComplete }) => {
   const handleAddToCart = (product: RecommendedProduct) => {
     const selectedSize = selectedSizes[String(product.id)];
 
-    if (!selectedSize && product.sizes?.length) {
+    if (!selectedSize && product.selectedOptions?.length) {
       setShowSizeWarning(true);
       setTimeout(() => setShowSizeWarning(false), 3000);
       return;
     }
 
-    const sizeObj =
-      product.sizes?.find((s) => s.size === selectedSize) || product.sizes?.[0];
-
-    if (!sizeObj) {
-      alert("Немає доступних розмірів для цього продукту");
-      return;
-    }
-
     // Используем правильный размер для добавления в корзину
-    const sizeToAdd = selectedSize || sizeObj.size;
+    const sizeToAdd = selectedSize || product.selectedOptions?.[0] || "";
     
     addToCart(product, sizeToAdd);
     setAddedProductName(product.name);
@@ -333,7 +325,7 @@ const Quiz: React.FC<QuizProps> = ({ data, onComplete }) => {
                           className={styles.productImage}
                           height={200}
                           priority={true}
-                          src={product.photo}
+                          src={product.mainImage}
                           width={300}
                         />
                       </a>
@@ -353,23 +345,14 @@ const Quiz: React.FC<QuizProps> = ({ data, onComplete }) => {
                         stroke={styles.yellowColor}
                       />
                     </button>
-                    <span className={styles.productBadge}>
-                      {product.badgeInfo}
-                    </span>
+                    {product.comparePrice && product.comparePrice > product.price && (
+                      <span className={styles.productBadge}>
+                        SALE
+                      </span>
+                    )}
                   </div>
                   <h3 className={styles.productName}>{product.name}</h3>
-                  <p className={styles.productType}>{product.type}</p>
-                  {(() => {
-                    const selectedSize = selectedSizes[String(product.id)];
-                    const sizeObj = product.sizes?.find(
-                      (s) => s.size === selectedSize
-                    );
-                    const price =
-                      sizeObj?.price || product.sizes?.[0]?.price || 0;
-                    return (
-                      <div className={styles.productPrice}>Від {price} грн</div>
-                    );
-                  })()}
+                  <div className={styles.productPrice}>Від {product.price} грн</div>
                   <form className={styles.productSizeForm}>
                     {renderSizes(product)}
                   </form>
@@ -403,11 +386,6 @@ const Quiz: React.FC<QuizProps> = ({ data, onComplete }) => {
                         <h4>Додаткова інформація</h4>
                         <p>{product.additionalInfo}</p>
                       </div>
-                    )}
-                    {product.application && (
-                      <p className={styles.infoItem}>
-                        <strong>Застосування:</strong> {product.application}
-                      </p>
                     )}
                   </div>
                   <button

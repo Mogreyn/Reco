@@ -1,4 +1,5 @@
 "use client";
+
 import { useForm } from "react-hook-form";
 import { useEffect, useImperativeHandle, forwardRef, useRef } from "react";
 import styles from "./SummaryForm.module.scss";
@@ -22,11 +23,13 @@ const SummaryForm = forwardRef(function SummaryForm({ onFormChange }: SummaryFor
   const values = watch();
   const prev = useRef<{ values: FormInput; isValid: boolean } | null>(null);
 
+  // Track changes
   useEffect(() => {
     const changed =
       !prev.current ||
-      JSON.stringify(prev.current.values) !== JSON.stringify(values) ||
+      Object.keys(values).some((key) => values[key as keyof FormInput] !== prev.current!.values[key as keyof FormInput]) ||
       prev.current.isValid !== isValid;
+
     if (changed) {
       onFormChange(values, isValid);
       prev.current = { values, isValid };
@@ -37,164 +40,139 @@ const SummaryForm = forwardRef(function SummaryForm({ onFormChange }: SummaryFor
     triggerValidation: () => trigger(undefined, { shouldFocus: true })
   }));
 
+  const handlePhoneInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handlePhoneChange(e, (field, value) => setValue(field, value, { shouldValidate: true }));
+  };
+
   return (
     <form className={styles.summaryForm} id="summaryForm">
-      <h2 className={styles.formTitle}>Доставка у відділення Нова Пошта</h2>
+      <h2 className={styles.formTitle}>Delivery </h2>
+
       <div className={styles.inputContainerWrapper}>
         <div className={styles.inputContainer}>
-          <InputLabel htmlFor="firstName" required={true}>
-            Ім&#39;я
-          </InputLabel>
-
+          <InputLabel htmlFor="firstName" required>First Name</InputLabel>
           <input
             id="firstName"
-            placeholder="Введіть ім'я"
+            placeholder="Enter first name"
             type="text"
-            {...register("firstName", {
-              required: "Це поле обовʼязкове",
-              pattern: {
-                value: /^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ'ʼ\s]+$/,
-                message: "Імʼя повинно містити тільки букви"
-              }
-            })}
+            {...register("firstName", { required: true })}
             className={`${styles.inputField} ${errors.firstName ? styles.inputError : ""}`}
           />
-
-          {errors.firstName && (
-            <p className={styles.inputErrorText}>{errors.firstName.message}</p>
-          )}
+          {errors.firstName && <p className={styles.inputErrorText}>{errors.firstName.message}</p>}
         </div>
 
         <div className={styles.inputContainer}>
-          <InputLabel htmlFor="lastName" required={true}>
-            Прізвище
-          </InputLabel>
-
+          <InputLabel htmlFor="lastName" required>Last Name</InputLabel>
           <input
             id="lastName"
-            placeholder="Введіть прізвище"
+            placeholder="Enter last name"
             type="text"
-            {...register("lastName", {
-              required: "Це поле обовʼязкове",
-              pattern: {
-                value: /^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ'ʼ\s]+$/,
-                message: "Прізвище повинно містити тільки букви"
-              }
-            })}
+            {...register("lastName", { required: true })}
             className={`${styles.inputField} ${errors.lastName ? styles.inputError : ""}`}
           />
-
-          {errors.lastName && (
-            <p className={styles.inputErrorText}>{errors.lastName.message}</p>
-          )}
+          {errors.lastName && <p className={styles.inputErrorText}>{errors.lastName.message}</p>}
         </div>
       </div>
 
       <div className={styles.inputContainer}>
-        <InputLabel htmlFor="phoneNumber" required={true}>
-          Телефон
-        </InputLabel>
-
+        <InputLabel htmlFor="phone" required>Phone</InputLabel>
         <input
-          id="phoneNumber"
+          id="phone"
           placeholder="+380 __ ___ __ __"
           type="text"
-          {...register("phoneNumber", {
-            required: "Це поле обовʼязкове",
-            minLength: {
-              value: 17,
-              message: "Введіть повний номер"
-            },
-            pattern: {
-              value: /^\+380 \d{2} \d{3} \d{2} \d{2}$/,
-              message: "Введіть коректний номер у форматі +380 XX XXX XX XX"
-            }
-          })}
-          className={`${styles.inputField} ${errors.phoneNumber ? styles.inputError : ""}`}
-          onChange={(event) => handlePhoneChange(event, (field, value) => setValue(field, value, { shouldValidate: true }))}
-          onFocus={(event) => handlePhoneChange(event, (field, value) => setValue(field, value, { shouldValidate: true }))}
+          {...register("phone", { required: true })}
+          className={`${styles.inputField} ${errors.phone ? styles.inputError : ""}`}
+          onChange={handlePhoneInput}
+          onFocus={handlePhoneInput}
         />
-
-        {errors.phoneNumber && (
-          <p className={styles.inputErrorText}>{errors.phoneNumber.message}</p>
-        )}
+        {errors.phone && <p className={styles.inputErrorText}>{errors.phone.message}</p>}
       </div>
-
-      {/* <div className={styles.inputContainer}>
-        <InputLabel htmlFor="country" required={true}>
-          Країна / Регіон
-        </InputLabel>
-
-        <input
-          className={styles.inputField}
-          id="country"
-          placeholder="Україна"
-          type="text"
-          {...register("country", {
-            required: "Це поле обовʼязкове"
-          })}
-        />
-
-        {errors.country && (
-          <p className={styles.inputErrorText}>{errors.country.message}</p>
-        )}
-      </div> */}
 
       <div className={styles.inputContainerWrapper}>
         <div className={styles.inputContainer}>
-          <InputLabel htmlFor="city" required={true}>
-            Місто
-          </InputLabel>
-
+          <InputLabel htmlFor="address1" required>Address</InputLabel>
           <input
-            className={styles.inputField}
-            id="city"
-            placeholder="Виберіть місто"
+            id="address1"
+            placeholder="Enter address"
             type="text"
-            {...register("city", {
-              required: "Це поле обовʼязкове"
-            })}
+            {...register("address1", { required: true })}
+            className={`${styles.inputField} ${errors.address1 ? styles.inputError : ""}`}
           />
-
-          {errors.city && (
-            <p className={styles.inputErrorText}>{errors.city.message}</p>
-          )}
+          {errors.address1 && <p className={styles.inputErrorText}>{errors.address1.message}</p>}
         </div>
 
         <div className={styles.inputContainer}>
-          <InputLabel htmlFor="postOffice" required={true}>
-            Відділення
-          </InputLabel>
-
+          <InputLabel htmlFor="address2">Address 2</InputLabel>
           <input
-            className={styles.inputField}
-            id="postOffice"
-            placeholder="Виберіть відділення"
+            id="address2"
+            placeholder="Apartment, office, etc."
             type="text"
-            {...register("postOffice", {
-              required: "Це поле обовʼязкове"
-            })}
+            {...register("address2")}
+            className={styles.inputField}
           />
+        </div>
+      </div>
 
-          {errors.postOffice && (
-            <p className={styles.inputErrorText}>{errors.postOffice.message}</p>
-          )}
+      <div className={styles.inputContainerWrapper}>
+        <div className={styles.inputContainer}>
+          <InputLabel htmlFor="city" required>City</InputLabel>
+          <input
+            id="city"
+            placeholder="City"
+            type="text"
+            {...register("city", { required: true })}
+            className={`${styles.inputField} ${errors.city ? styles.inputError : ""}`}
+          />
+          {errors.city && <p className={styles.inputErrorText}>{errors.city.message}</p>}
+        </div>
+
+        <div className={styles.inputContainer}>
+          <InputLabel htmlFor="state" required>State / Region</InputLabel>
+          <input
+            id="state"
+            placeholder="State"
+            type="text"
+            {...register("state", { required: true })}
+            className={`${styles.inputField} ${errors.state ? styles.inputError : ""}`}
+          />
+          {errors.state && <p className={styles.inputErrorText}>{errors.state.message}</p>}
+        </div>
+      </div>
+
+      <div className={styles.inputContainerWrapper}>
+        <div className={styles.inputContainer}>
+          <InputLabel htmlFor="postalCode" required>Postal Code</InputLabel>
+          <input
+            id="postalCode"
+            placeholder="Postal code"
+            type="text"
+            {...register("postalCode", { required: true })}
+            className={`${styles.inputField} ${errors.postalCode ? styles.inputError : ""}`}
+          />
+          {errors.postalCode && <p className={styles.inputErrorText}>{errors.postalCode.message}</p>}
+        </div>
+
+        <div className={styles.inputContainer}>
+          <InputLabel htmlFor="country" required>Country</InputLabel>
+          <input
+            id="country"
+            placeholder="Ukraine"
+            type="text"
+            {...register("country", { required: true })}
+            className={`${styles.inputField} ${errors.country ? styles.inputError : ""}`}
+          />
+          {errors.country && <p className={styles.inputErrorText}>{errors.country.message}</p>}
         </div>
       </div>
 
       <div className={styles.inputContainer}>
-        <InputLabel htmlFor="comment">Нотатки до замовлення</InputLabel>
-
+        <InputLabel htmlFor="comment">Order Notes</InputLabel>
         <textarea
-          className={styles.inputField}
           id="comment"
-          placeholder="Наприклад спеціальні нотатки для доставки"
+          placeholder="Any special instructions for delivery"
           {...register("comment")}
+          className={styles.inputField}
         />
-
-        {errors.comment && (
-          <p className={styles.inputErrorText}>{errors.comment.message}</p>
-        )}
       </div>
     </form>
   );

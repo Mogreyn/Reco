@@ -30,7 +30,7 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
   const currentProduct = allProducts[currentIndex] || {};
 
   useEffect(() => {
-    const defaultSize = currentProduct?.sizes?.[0]?.size ?? null;
+    const defaultSize = currentProduct?.selectedOptions?.[0] ?? null;
     setSelectedSize(defaultSize);
   }, [currentIndex, currentProduct]);
 
@@ -52,15 +52,10 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
     setCurrentIndex((prev) => (prev - 1 + allProducts.length) % allProducts.length);
 
   const handleAddToCart = useCallback(() => {
-    if (!selectedSize || !currentProduct.sizes) {
+    if (!selectedSize) {
       return alert("Будь ласка, виберіть розмір!");
     }
     if (!allProducts.length) return;
-
-    const selectedSizeObj = currentProduct.sizes.find(
-      (s) => s.size === selectedSize
-    );
-    if (!selectedSizeObj) return;
 
     for (let i = 0; i < quantity; i++) {
       addToCart(currentProduct, selectedSize);
@@ -77,14 +72,9 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
   );
 
   const renderPrice = () => {
-    const selectedSizeObj = selectedSize
-      ? currentProduct.sizes.find((s) => s.size === selectedSize)
-      : null;
-
     return (
       <p className={styles.priceContainer}>
-        <strong className={styles.price}></strong>
-        {selectedSizeObj ? `${selectedSizeObj.price * quantity} грн` : "Оберіть розмір"}
+        {currentProduct.price ? `$ ${currentProduct.price * quantity} ` : "Оберіть розмір"}
       </p>
     );
   };
@@ -97,7 +87,7 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
           index === currentIndex ? (
             <Link
               key={index}
-              href={`/${product._id}`}
+              href={`/${product.id}`}
               className={`${styles.slide} ${styles.active}`}
               style={{ textDecoration: "none", color: "inherit" }}
               tabIndex={-1}
@@ -109,7 +99,7 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
                 width={300}
                 quality={80}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                src={product.photo}
+                src={product.mainImage}
               />
 
               <div className={styles.buttonPlace}>
@@ -162,7 +152,7 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
                     </Button>
                   </>
                 ) : (
-                  <Link href={`/${product._id}`}>
+                  <Link href={`/${product.id}`}>
                     <Button className={styles.moreButton} size="l" variant="secondary">
                       <span className={styles.moreButtonText}>VIEW DETAILS</span>
                     </Button>
@@ -179,7 +169,7 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
                 width={300}
                 quality={80}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                src={product.photo}
+                src={product.mainImage}
               />
             </div>
           )

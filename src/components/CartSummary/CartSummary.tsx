@@ -40,16 +40,7 @@ const CartSummary = () => {
   };
 
   const getItemPrice = (item: CartItem) => {
-    if (!item.size || !item.product.sizes) return 0;
-
-    // Проверяем, является ли sizes массивом (новая структура)
-    if (Array.isArray(item.product.sizes)) {
-      const sizeObj = item.product.sizes.find((s) => s.size === item.size);
-      return sizeObj?.price || 0;
-    }
- 
-    // Старая структура (объект)
-    return (item.product.sizes as Record<string, number>)[item.size] || 0;
+    return item.product.price;
   };
 
   const subtotal = useMemo(() => {

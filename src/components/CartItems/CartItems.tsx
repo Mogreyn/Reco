@@ -23,14 +23,7 @@ const CartItems = () => {
   };
 
   const getItemPrice = (item: CartItem) => {
-    if (!item.size || !item.product.sizes) return 0;
-
-    if (Array.isArray(item.product.sizes)) {
-      const sizeObj = item.product.sizes.find((s) => s.size === item.size);
-      return sizeObj?.price || 0;
-    }
-
-    return (item.product.sizes as Record<string, number>)[item.size] || 0;
+    return item.product.price;
   };
 
   return (
@@ -48,7 +41,7 @@ const CartItems = () => {
                 <Image
                   alt={item.product.name}
                   height={148}
-                  src={item.product.photo}
+                  src={item.product.mainImage}
                   width={148}
                 />
               </div>
@@ -68,7 +61,7 @@ const CartItems = () => {
 
                 <div className={styles.controlContainer}>
                   <p className={styles.price}>
-                    $ 
+                    ₴ 
                     {(getItemPrice(item) * item.quantity).toLocaleString(
                       "uk-UA",
                       {

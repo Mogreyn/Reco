@@ -32,7 +32,6 @@ export type QuizResults = {
 export type RecommendedProduct = Product & {
   score: number;
   photoProduct: string;
-  price: number;
   isNew: boolean;
   volume: string;
   additionalInfo?: string;
