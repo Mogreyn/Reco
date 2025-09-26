@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import type { Product } from "@/types/types";
 import { useCartContext } from "@/hooks/useCartContext";
@@ -16,8 +18,7 @@ export interface ProductCardProps {
 
 const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(() =>
+  const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth <= 768 : false
   );
   const [offsetRadius, setOffsetRadius] = useState(2);
@@ -25,15 +26,11 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
   const [addedImpact, setAddedImpact] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  // Отображаем все товары
+  // Все товары
   const allProducts = useMemo(() => products, [products]);
-  const currentProduct = allProducts[currentIndex] || {};
+  const currentProduct = allProducts[currentIndex] ?? null;
 
-  useEffect(() => {
-    const defaultSize = currentProduct?.selectedOptions?.[0] ?? null;
-    setSelectedSize(defaultSize);
-  }, [currentIndex, currentProduct]);
-
+  // resize listener
   useEffect(() => {
     const handleResize = () => {
       if (typeof window === "undefined") return;
@@ -48,59 +45,66 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
 
   const handleNext = () =>
     setCurrentIndex((prev) => (prev + 1) % allProducts.length);
+
   const handlePrev = () =>
     setCurrentIndex((prev) => (prev - 1 + allProducts.length) % allProducts.length);
 
   const handleAddToCart = useCallback(() => {
-    if (!selectedSize) {
-      return alert("Будь ласка, виберіть розмір!");
-    }
-    if (!allProducts.length) return;
-
+    if (!currentProduct) return;
     for (let i = 0; i < quantity; i++) {
-      addToCart(currentProduct, selectedSize);
+      addToCart(currentProduct);
     }
-
     setAddedImpact(true);
     setTimeout(() => setAddedImpact(false), 1200);
-  }, [selectedSize, currentProduct, addToCart, allProducts.length, quantity]);
+  }, [currentProduct, addToCart, quantity]);
 
-  const renderDescription = () => (
-    <div className={styles.descriptionContainer}>
-      <p>{currentProduct.description}</p>
-    </div>
-  );
+  const renderDescription = () => {
+    if (!currentProduct) return null;
+    const text = currentProduct.description ?? (currentProduct as any).seoDescription ?? "";
+    return (
+      <div className={styles.descriptionContainer}>
+        <p>{text}</p>
+      </div>
+    );
+  };
 
   const renderPrice = () => {
+    const price = currentProduct?.price;
     return (
       <p className={styles.priceContainer}>
-        {currentProduct.price ? `$ ${currentProduct.price * quantity} ` : "Оберіть розмір"}
+        {price ? `$ ${price * quantity}` : "Оберіть розмір"}
       </p>
     );
   };
 
   const slides = useMemo(
     () =>
-      allProducts.map((product, index) => ({
-        key: product.id,
-        content:
-          index === currentIndex ? (
+      allProducts.map((product, index) => {
+        const isActive = index === currentIndex;
+
+        return {
+          key: product.id,
+          content: isActive ? (
             <Link
-              key={index}
+              key={product.id}
               href={`/${product.id}`}
               className={`${styles.slide} ${styles.active}`}
               style={{ textDecoration: "none", color: "inherit" }}
               tabIndex={-1}
             >
-              <Image
-                alt={product.name}
-                className={styles.productImage}
-                height={300}
-                width={300}
-                quality={80}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                src={product.mainImage}
-              />
+              {product.mainImage ? (
+                <Image
+                  alt={product.name}
+                  className={styles.productImage}
+                  height={300}
+                  width={300}
+                  quality={80}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  src={product.mainImage}
+                />
+              ) : (
+                <div className={styles.placeholder}>No image</div>
+              )}
 
               <div className={styles.buttonPlace}>
                 {isMobile ? (
@@ -130,7 +134,6 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
                     </div>
                     <Button
                       className={`addToCart${addedImpact ? " added" : ""}`}
-                      disabled={!selectedSize || addedImpact}
                       size="m"
                       variant="primary"
                       onClick={(e) => {
@@ -161,20 +164,25 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
               </div>
             </Link>
           ) : (
-            <div key={index} className={styles.slide}>
-              <Image
-                alt={product.name}
-                className={styles.productImage}
-                height={300}
-                width={300}
-                quality={80}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                src={product.mainImage}
-              />
+            <div key={product.id} className={styles.slide}>
+              {product.mainImage ? (
+                <Image
+                  alt={product.name}
+                  className={styles.productImage}
+                  height={300}
+                  width={300}
+                  quality={80}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  src={product.mainImage}
+                />
+              ) : (
+                <div className={styles.placeholder}>No image</div>
+              )}
             </div>
           )
-      })),
-    [allProducts, currentIndex, selectedSize, isMobile, handleAddToCart, addedImpact, quantity]
+        };
+      }),
+    [allProducts, currentIndex, isMobile, handleAddToCart, addedImpact, quantity]
   );
 
   const swipeHandlers = useSwipeable({
@@ -207,7 +215,7 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
           />
         </div>
         <div className={styles.info}>
-          <h2>{currentProduct.name}</h2>
+          <h2>{currentProduct?.name}</h2>
           {isMobile ? (
             <>
               {renderPrice()}
@@ -236,7 +244,6 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
               </div>
               <Button
                 className={`addToCart${addedImpact ? " added" : ""}`}
-                disabled={!selectedSize || addedImpact}
                 size="pr"
                 variant="primary"
                 onClick={(e) => {

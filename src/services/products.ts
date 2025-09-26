@@ -111,7 +111,7 @@ function normalizeProduct(p: any): Product {
     sku: p.sku,
     stock: Boolean(p.stock),
     status: p.status,
-    mainImage: p.mainImage ?? null,
+    mainImage: p.mainImage ?? "",
     images: p.images ?? [],
     comparePrice: p.comparePrice ? Number(p.comparePrice) : undefined,
     translations: p.translations,

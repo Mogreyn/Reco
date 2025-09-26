@@ -1,0 +1,240 @@
+@use "@/styles/variables" as *;
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 150px;
+
+}
+.mainContainer{
+  display: flex;
+  flex-direction: column;
+  gap:100px;
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  width: 100%;
+  max-width: 1230px;
+  height: 684px;
+  margin: 0 auto;
+  margin-top: 120px;
+
+
+  @media (max-width: $breakpoint-mobile) {
+    height: 200px;
+  }
+
+  .image {
+    object-fit: contain;
+    object-position: center;
+
+  }
+}
+
+.banner_text {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 40px;
+  color: $black-color;
+  max-width: 639px;
+  height: auto;
+  z-index: 10;
+  margin-left: 100px;
+
+
+  @media (max-width: $breakpoint-mobile) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.banner_textHeader {
+  font-size: 64px;
+  font-weight: 400;
+}
+
+.banner_textText {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+
+
+/* HOW */
+.how {
+  max-width: 1230px;
+  margin: 0 auto 80px;
+}
+
+.howTitle {
+  color: $black-color;
+  margin-bottom: 16px;
+}
+
+.howGrid {
+  display: grid;
+  grid-template-columns: 1fr 520px;
+  gap: 24px;
+
+  @media (max-width: $breakpoint-laptop) {
+    grid-template-columns: 1fr 420px;
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.howList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 55px;
+}
+
+.howItem {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: start;
+  gap: 16px;
+}
+
+.howNum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: $main-border;
+  color: $black-color;
+  font-size: 20px;
+}
+
+.howItemTitle {
+  color: $black-color;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.howItemText {
+  color: $black-color;
+  opacity: 0.9;
+}
+
+.howImages {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.howLarge,
+.howMedium,
+.howSmall {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.howLarge {
+  height: 295px;
+}
+
+.howRow {
+  display: grid;
+  grid-template-columns: 1fr 188px;
+  gap: 16px;
+}
+
+.howMedium {
+  height: 197px;
+}
+
+.howSmall {
+  height: 188px;
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .howLarge {
+    height: 280px;
+  }
+  .howRow {
+    grid-template-columns: 1fr 160px;
+  }
+  .howMedium {
+    height: 160px;
+  }
+  .howSmall {
+    height: 160px;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .howLarge {
+    height: 200px;
+  }
+  .howRow {
+    grid-template-columns: 1fr 120px;
+  }
+  .howMedium {
+    height: 120px;
+  }
+  .howSmall {
+    height: 120px;
+  }
+}
+
+/* VALUES */
+.values {
+  max-width: 1230px;
+  margin: 80px auto 120px;
+}
+
+.valuesTitle {
+  text-align: center;
+  margin-bottom: 32px;
+  color: $black-color;
+
+  span {
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  em {
+    font-style: normal;
+    color: #a78686;
+    margin-left: 8px;
+  }
+}
+
+
+/* Back to top */
+.backToTop {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: #8f6f6f;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backToTopIcon {
+  font-size: 20px;
+  line-height: 1;
+}
+

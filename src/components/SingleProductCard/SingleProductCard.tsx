@@ -99,7 +99,6 @@ const SingleProductCard: React.FC<SingleProductCardProps> = ({ product }) => {
           </p>
         )}
 
-        {/* Цена + comparePrice */}
         <div className={styles.priceWrapper}>
           {product.comparePrice && product.comparePrice > product.price && (
             <span className={styles.comparePrice}>${product.comparePrice}</span>
@@ -107,7 +106,6 @@ const SingleProductCard: React.FC<SingleProductCardProps> = ({ product }) => {
           <span className={styles.price}>${product.price}</span>
         </div>
 
-        {/* Кнопка */}
         <Button
           size={getButtonSize()}
           onClick={handleAddToCart}

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import type { Product } from "@/types/types";
 import { fetchProducts } from "@/services/products";
@@ -17,13 +17,6 @@ const ProductCard = dynamic(
   }
 );
 
-// const FeedbackSection = dynamic(
-//   () => import("@/components/FeedbackSection/FeedbackSection"),
-//   {
-//     ssr: false,
-//     loading: () => <div className={styles.loading}>Отзывы грузятся...</div>
-//   }
-// );
 
 export const MainPageClient = () => {
   const [products, setProducts] = useState<Product[]>([]);
