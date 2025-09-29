@@ -26,6 +26,8 @@
 
   @media (max-width: $breakpoint-mobile) {
     height: 200px;
+    justify-content: center;
+
   }
 
   .image {
@@ -50,12 +52,19 @@
   @media (max-width: $breakpoint-mobile) {
     flex-direction: column;
     text-align: center;
+    margin-left: 0;
+    max-width: 300px;
+
   }
 }
 
 .banner_textHeader {
   font-size: 64px;
   font-weight: 400;
+  @media (max-width: $breakpoint-mobile) {
+    font-size: 32px;
+
+  }
 }
 
 .banner_textText {

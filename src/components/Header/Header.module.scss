@@ -83,3 +83,21 @@
     margin-left: auto;
   }
 }
+.badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #ff0000; 
+  color: #fff;
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: 16px;
+  min-width: 14px;
+  height: 14px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  padding: 0 4px;
+}

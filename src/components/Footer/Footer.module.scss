@@ -81,6 +81,10 @@
 
 .payment_icon_container {
   order: 5;
+  @media (max-width: $breakpoint-mobile) {
+    display:flex;
+    justify-content:center;
+  }
 }
 
 .authorRights {

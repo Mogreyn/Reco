@@ -16,6 +16,7 @@
   text-align: center;
   gap: 20px;
   box-sizing: border-box;
+ 
 }
 
 /* Стили для основного контента */
@@ -65,7 +66,7 @@
 
 /* Адаптивные стили для планшетов */
 @media (max-width: $breakpoint-tablet) {
-  .heroSection {
+  .hero_section {
     flex-direction: column;
     align-items: center;
     height: auto;
@@ -114,6 +115,9 @@
 
 /* Адаптивные стили для мобильных устройств */
 @media (max-width: $breakpoint-mobile) {
+  .hero_section{
+    height:300px;
+  }
   .slogan {
     text-align: center;
     font-weight: 600;
@@ -141,7 +145,10 @@
   }
 
   .image {
-    max-width: 300px;
+    margin:0 auto;
+    max-width: 100%;
+    max-height: 300px;
+
     transform: none;
   }
 }

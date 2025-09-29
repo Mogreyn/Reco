@@ -72,7 +72,7 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
     const price = currentProduct?.price;
     return (
       <p className={styles.priceContainer}>
-        {price ? `$ ${price * quantity}` : "Оберіть розмір"}
+        {price ? `$ ${price * quantity}` : "Select size"}
       </p>
     );
   };
@@ -151,7 +151,7 @@ const CatalogProductCard: React.FC<ProductCardProps> = ({ products }) => {
                           : {}
                       }
                     >
-                      {addedImpact ? "Додано!" : "ДОДАТИ В КОШИК"}
+                      {addedImpact ? "ADDED!" : "TO CART"}
                     </Button>
                   </>
                 ) : (

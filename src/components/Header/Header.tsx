@@ -42,16 +42,27 @@ const Header = () => {
           </NavBar>
 
           <div className={styles.active_btns}>
-            <Link aria-label="Favorites" className={styles.cart_btn} href="/favorites">
-              <span style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
-                <span style={{ fontSize: 22, lineHeight: 1, marginRight: 8 }}>♡</span>
+            <Link
+              aria-label="Favorites"
+              className={styles.cart_btn}
+              href="/favorites"
+            >
+              <span
+                style={{
+                  position: "relative",
+                  display: "inline-flex",
+                  alignItems: "center"
+                }}
+              >
+                <span style={{ fontSize: 22, lineHeight: 1, marginRight: 8 }}>
+                  ♡
+                </span>
                 {favorites.length > 0 && (
-                  <span style={{ position: "absolute", top: -6, right: -6, background: "#fbc000", color: "#111", borderRadius: 9999, padding: "0 6px", fontSize: 12 }}>
-                    {favorites.length}
-                  </span>
+                  <span className={styles.badge}>{favorites.length}</span>
                 )}
               </span>
             </Link>
+
             <Link aria-label="Cart" className={styles.cart_btn} href="/cart">
               <CartButton cart={[]} />
             </Link>
